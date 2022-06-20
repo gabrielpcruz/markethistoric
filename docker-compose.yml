@@ -1,0 +1,22 @@
+version: '3'
+services:
+  webserver:
+    build:
+      context: ./bin/webserver
+    container_name: ${PROJECT_NAME}webserver
+    image: ${PROJECT_NAME}webserver
+    ports:
+      - ${PORT}:80
+    external_links:
+      - redis
+    networks:
+      - docker-default
+    volumes:
+      - ${DOCUMENT_ROOT-./www}:/var/www/html
+      - ${VHOSTS_DIR-./config/nginx/sites-enabled}:/etc/nginx/sites-enabled
+      - ${PHP_INI-./config/php/php.ini}:/etc/php.ini
+      - ${LOG_DIR-./logs/nginx}:/var/log/httpd
+      - ${CRON_DIR-./config/cron}:/var/spool/cron/crontabs
+networks:
+  docker-default:
+    external: true
