@@ -11,7 +11,7 @@ $settings['tests'] = $settings['root'] . '/tests';
 $settings['public'] = $settings['root'] . '/public';
 
 $settings['error'] = [
-    'slashtrace' => false, // Exibir erros com uma interface gráfica
+    'slashtrace' => 1, // Exibir erros com uma interface gráfica
     'error_reporting' => 1,
     'display_errors' => 1,
     'display_startup_errors' => 1,
@@ -35,6 +35,19 @@ $settings['view'] = [
         'debug' => true,
         'auto_reload' => true,
     ],
+];
+
+$settings['database'] = [
+    'sqlite' => [
+        'driver' => 'sqlite',
+        'host' => 'localhost',
+        'database' =>  $settings['root'] . '/storage/database/db.sqlite',
+        'username' => 'root',
+        'password' => 'root',
+        'charset' => 'utf8',
+        'collation' => 'utf8_unicode_ci',
+        'prefix' => '',
+    ]
 ];
 
 return $settings;

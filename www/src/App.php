@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Factory\ContainerFactory;
+use App\Factory\IlluminateDatabase;
 use App\Handler\DefaultErrorHandler;
 use DI\Container;
 use DI\DependencyException;
@@ -52,6 +53,8 @@ class App
         $app = self::getInstace();
 
         $settings = $app->getContainer()->get('settings');
+
+        (new IlluminateDatabase())->create($app->getContainer());
 
         if ($settings->get('error.slashtrace')) {
             $app->getContainer()->get(SlashTrace::class);
