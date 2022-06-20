@@ -15,7 +15,7 @@ services:
       - ${DOCUMENT_ROOT-./www}:/var/www/html
       - ${VHOSTS_DIR-./config/nginx/sites-enabled}:/etc/nginx/sites-enabled
       - ${PHP_INI-./config/php/php.ini}:/etc/php.ini
-      - ${LOG_DIR-./logs/nginx}:/var/log/httpd
+      - ${LOG_DIR-./logs/nginx}:/var/log/nginx
       - ${CRON_DIR-./config/cron}:/var/spool/cron/crontabs
 networks:
   docker-default:
