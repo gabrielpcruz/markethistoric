@@ -1,16 +1,16 @@
 <?php
 
 use Adbar\Dot;
-use App\Factory\SlachTraceFactory;
-use SlashTrace\SlashTrace;
+use App\Repository\RepositoryManager;
+use Illuminate\Database\Capsule\Manager;
 use Slim\App;
 use Slim\Factory\AppFactory;
 use Psr\Container\ContainerInterface;
 use Slim\Views\Twig;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
+use function DI\autowire;
 use function DI\factory;
-
 
 return [
 
@@ -52,8 +52,9 @@ return [
         return $twig;
     },
 
-    SlashTrace::class => factory([
-        SlachTraceFactory::class,
-        'create',
-    ]),
+    RepositoryManager::class => autowire(),
+
+    Illuminate\Database\ConnectionInterface::class => function (ContainerInterface $container) {
+        return Manager::connection('default');
+    },
 ];

@@ -3,17 +3,15 @@
 namespace App;
 
 use App\Factory\ContainerFactory;
-use App\Factory\IlluminateDatabase;
 use App\Handler\DefaultErrorHandler;
+use App\Provider\ProviderInterface;
 use DI\Container;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use SlashTrace\SlashTrace;
 use Slim\App as SlimApp;
 use Exception;
-use Slim\Handlers\ErrorHandler;
 
 class App
 {
@@ -26,6 +24,22 @@ class App
      * @var Container
      */
     private static Container $container;
+
+    /**
+     * @return bool
+     */
+    public static function isConsole(): bool
+    {
+        return self::getType() == 'console';
+    }
+
+    /**
+     * @return string
+     */
+    private static function getType(): string
+    {
+        return php_sapi_name() == 'cli' ? 'console' : 'http';
+    }
 
     /**
      * @throws DependencyException
@@ -47,18 +61,13 @@ class App
      * @throws NotFoundException
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     public static function bootstrap(): SlimApp
     {
         $app = self::getInstace();
 
-        $settings = $app->getContainer()->get('settings');
-
-        (new IlluminateDatabase())->create($app->getContainer());
-
-        if ($settings->get('error.slashtrace')) {
-            $app->getContainer()->get(SlashTrace::class);
-        }
+        self::provide();
 
         $errorMiddleware = $app->addErrorMiddleware(true, true, true);
         $errorMiddleware->setDefaultErrorHandler(DefaultErrorHandler::class);
@@ -78,5 +87,23 @@ class App
         }
 
         return self::$container;
+    }
+
+    /**
+     * @return void
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    private static function provide()
+    {
+        $container = self::getContainer();
+
+        $providers = (require_once $container->get('settings')->get('file.providers'));
+
+        /** @var ProviderInterface $provider */
+        foreach ($providers as $provider) {
+            $provider = new $provider();
+            $provider->provid($container);
+        }
     }
 }

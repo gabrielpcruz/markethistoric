@@ -1,11 +1,14 @@
 <?php
 
-use App\Http\Api\Product;
 use Slim\App;
 
+use App\Http\Site\Home;
+use App\Http\Api\Home as HomeApi;
 
 return function (App $app) {
-    // Api
+    // Site
+    $app->get('/', [Home::class, 'index']);
 
-    $app->get('/', [Product::class, 'show']);
+    // Api
+    $app->get('/v1/home', [HomeApi::class, 'index']);
 };
