@@ -4,7 +4,6 @@ namespace App\Http\Site;
 
 use App\Entity\Product\ProductEntity;
 use App\Http\ControllerSite;
-use App\Repository\Example\RiceRespository;
 use App\Repository\Product\ProductRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

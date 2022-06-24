@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Http\Api;
+
+use App\Entity\Product\ProductEntity;
+use App\Http\ControllerApi;
+use App\Repository\Product\ProductRepository;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use ReflectionException;
+
+class Product extends ControllerApi
+{
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function index(Request $request, Response $response): Response
+    {
+        /** @var ProductRepository $productRepository */
+        $productRepository = $this->getRepositoryManager()->get(ProductRepository::class);
+
+        return $this->responseJSON(
+            $response,
+            $productRepository->all()->toArray()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $params
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function show(Request $request, Response $response, $params): Response
+    {
+        $product_id = $request->getAttribute('id');
+
+        /** @var ProductRepository $productRepository */
+        $productRepository = $this->getRepositoryManager()->get(ProductRepository::class);
+
+        $product = $productRepository->findById($product_id);
+
+        return $this->responseJSON(
+            $response,
+            $product->toArray()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $params
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function history(Request $request, Response $response, $params): Response
+    {
+        $product_id = $request->getAttribute('id');
+
+        /** @var ProductRepository $productRepository */
+        $productRepository = $this->getRepositoryManager()->get(ProductRepository::class);
+
+        /** @var ProductEntity $product */
+        $product = $productRepository->findById($product_id);
+
+        return $this->responseJSON(
+            $response,
+            $product->history->toArray()
+        );
+    }
+}
