@@ -2,8 +2,10 @@
 
 namespace App\Http\Site;
 
+use App\Entity\Product\ProductEntity;
 use App\Http\ControllerSite;
 use App\Repository\Example\RiceRespository;
+use App\Repository\Product\ProductRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -22,11 +24,14 @@ class Home extends ControllerSite
      */
     public function index(Request $request, Response $response): Response
     {
-        $repository = $this->getRepositoryManager()->get(RiceRespository::class);
+        $repository = $this->getRepositoryManager()->get(ProductRepository::class);
+
+        /** @var ProductEntity $product */
+        $product = $repository->findById(1);
 
         return $this->responseJSON(
             $response,
-            $repository->all()->toArray()
+            $product->history()->get()->toArray()
         );
     }
 }
