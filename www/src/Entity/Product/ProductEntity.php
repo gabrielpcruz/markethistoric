@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class ProductEntity extends Entity
 {
-
     /**
      * @var string
      */
@@ -22,6 +21,6 @@ class ProductEntity extends Entity
      */
     public function history(): HasMany
     {
-        return $this->hasMany(ProductHistory::class);
+        return $this->hasMany(ProductHistoryEntity::class);
     }
 }

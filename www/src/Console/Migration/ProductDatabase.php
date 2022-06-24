@@ -3,8 +3,11 @@
 namespace App\Console\Migration;
 
 use App\Console\ConsoleMigration;
+use App\Entity\Inventory\InventoryEntity;
 use App\Entity\Product\ProductEntity;
 use DateTime;
+use DateTimeZone;
+use Exception;
 use Illuminate\Database\Schema\Blueprint;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,8 +36,13 @@ class ProductDatabase extends ConsoleMigration
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $output->writeln('<info>Droping tables...</info>');
         $this->dropTables();
+
+        $output->writeln('<info>Creating tables...</info>');
         $this->createTables();
+
+        $output->writeln('<info>Inserting products...</info>');
         $this->insertProducts();
 
         return Command::SUCCESS;
@@ -45,8 +53,10 @@ class ProductDatabase extends ConsoleMigration
      */
     private function dropTables() : void
     {
-        $this->schemaBuilder->dropIfExists('product');
+        $this->schemaBuilder->dropIfExists('invectory_product');
         $this->schemaBuilder->dropIfExists('product_history');
+        $this->schemaBuilder->dropIfExists('invectory');
+        $this->schemaBuilder->dropIfExists('product');
     }
 
     /**
@@ -74,10 +84,32 @@ class ProductDatabase extends ConsoleMigration
                 $table->timestamps();
             });
         }
+
+        if (!$this->schemaBuilder->hasTable('inventory')) {
+            $this->schemaBuilder->create('inventory', function (Blueprint $table) {
+                $table->increments('id')->unsigned();
+                $table->string('title', 255)->nullable();
+                $table->timestamps();
+            });
+        }
+
+        if (!$this->schemaBuilder->hasTable('inventory_product')) {
+            $this->schemaBuilder->create('inventory_product', function (Blueprint $table) {
+                $table->increments('id')->unsigned();
+
+                $table->foreignIdFor(InventoryEntity::class);
+                $table->foreignIdFor(ProductEntity::class);
+
+                $table->tinyInteger('checked')->default(0)->nullable(false);
+
+                $table->timestamps();
+            });
+        }
     }
 
     /**
      * @return void
+     * @throws Exception
      */
     private function insertProducts() : void
     {

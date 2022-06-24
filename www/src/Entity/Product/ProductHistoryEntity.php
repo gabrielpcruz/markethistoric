@@ -4,7 +4,7 @@ namespace App\Entity\Product;
 
 use App\Entity\Entity;
 
-class ProductHistory extends Entity
+class ProductHistoryEntity extends Entity
 {
     protected $table = 'product_history';
 }

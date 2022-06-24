@@ -2,7 +2,7 @@
 
 namespace App\Repository\Product;
 
-use App\Entity\Product\ProductHistory;
+use App\Entity\Product\ProductHistoryEntity;
 use App\Repository\Repository;
 
 class ProductHistoryRepository extends Repository
@@ -12,6 +12,6 @@ class ProductHistoryRepository extends Repository
      */
     public function getEntityClass(): string
     {
-        return ProductHistory::class;
+        return ProductHistoryEntity::class;
     }
 }
