@@ -2,6 +2,7 @@
 
 namespace App\Http\Api;
 
+use App\Entity\Inventory\InvectoryProductEntity;
 use App\Entity\Inventory\InventoryEntity;
 use App\Http\ControllerApi;
 use App\Repository\Invectory\InvectoryRepository;
@@ -79,6 +80,36 @@ class Invectory extends ControllerApi
         return $this->responseJSON(
             $response,
             $invectory->list->toArray()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $params
+     * @return void
+     */
+    public function post(Request $request, Response $response, $params): Response
+    {
+        $listInfo = json_decode($request->getBody()->getContents());
+
+        $invectoryRepository = $this->getRepositoryManager()->get(InvectoryRepository::class);
+
+        $invenctory = new InventoryEntity();
+        $invenctory->setTitle($listInfo->name);
+        $invectoryRepository->save($invenctory);
+
+        foreach ($listInfo->products as $product_id) {
+            $invenctoryProduct = new InvectoryProductEntity();
+            $invenctoryProduct->setIdInvenctory($invenctory->getId());
+            $invenctoryProduct->setIdProduct($product_id);
+            $invenctoryProduct->save();
+        }
+
+
+        return $this->responseJSON(
+            $response,
+            []
         );
     }
 }

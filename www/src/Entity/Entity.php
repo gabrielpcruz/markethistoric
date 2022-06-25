@@ -16,4 +16,12 @@ class Entity extends Model
     {
         return $this->getAttribute($key);
     }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->attributes['id'];
+    }
 }

@@ -43,4 +43,22 @@ class InvectoryProductEntity extends Entity
             "checked" => $this->checked,
         ];
     }
+
+    /**
+     * @param $id
+     * @return void
+     */
+    public function setIdInvenctory($id)
+    {
+        $this->attributes['inventory_entity_id'] = $id;
+    }
+
+    /**
+     * @param $id
+     * @return void
+     */
+    public function setIdProduct($id)
+    {
+        $this->attributes['product_entity_id'] = $id;
+    }
 }

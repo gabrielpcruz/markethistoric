@@ -7,6 +7,15 @@ use Slim\App;
 use App\Http\Site\Home;
 
 return function (App $app) {
+
+    $app->options('/{routes:.+}', function ($request, $response, $args) {
+        return $response
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    });
+
+
     // Site
     $app->get('/', [Home::class, 'index']);
 
@@ -15,7 +24,9 @@ return function (App $app) {
     $app->get('/v1/product/{id}', [Product::class, 'show']);
     $app->get('/v1/product/{id}/history', [Product::class, 'history']);
 
-    $app->get('/v1/invectory', [Invectory::class, 'index']);
-    $app->get('/v1/invectory/{id}', [Invectory::class, 'show']);
-    $app->get('/v1/invectory/{id}/list', [Invectory::class, 'list']);
+    $app->get('/v1/invenctory', [Invectory::class, 'index']);
+    $app->get('/v1/invenctory/{id}', [Invectory::class, 'show']);
+    $app->get('/v1/invenctory/{id}/list', [Invectory::class, 'list']);
+
+    $app->post('/v1/invenctory', [Invectory::class, 'post']);
 };
