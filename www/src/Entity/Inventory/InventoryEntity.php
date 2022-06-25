@@ -11,7 +11,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class InventoryEntity extends Entity
 {
+    /**
+     * @var string
+     */
     protected $table = 'inventory';
+
+    /**
+     * @var string[]
+     */
+    protected $visible = [
+        'id',
+        'title',
+        'created_at'
+    ];
 
     /**
      * @return HasMany
