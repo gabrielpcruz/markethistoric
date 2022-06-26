@@ -29,4 +29,5 @@ return function (App $app) {
     $app->get('/v1/invenctory/{id}/list', [Invectory::class, 'list']);
 
     $app->post('/v1/invenctory', [Invectory::class, 'post']);
+    $app->delete('/v1/invenctory/{id}', [Invectory::class, 'delete']);
 };

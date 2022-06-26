@@ -5,6 +5,7 @@ namespace App\Http\Api;
 use App\Entity\Inventory\InvectoryProductEntity;
 use App\Entity\Inventory\InventoryEntity;
 use App\Http\ControllerApi;
+use App\Repository\Invectory\InvectoryProductRepository;
 use App\Repository\Invectory\InvectoryRepository;
 use App\Repository\Product\ProductRepository;
 use Psr\Container\ContainerExceptionInterface;
@@ -88,6 +89,9 @@ class Invectory extends ControllerApi
      * @param Response $response
      * @param $params
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function post(Request $request, Response $response, $params): Response
     {
@@ -106,6 +110,33 @@ class Invectory extends ControllerApi
             $invenctoryProduct->save();
         }
 
+        return $this->responseJSON(
+            $response,
+            []
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $params
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function delete(Request $request, Response $response, $params): Response
+    {
+        $invectory_id = $request->getAttribute('id');
+
+        /** @var InvectoryRepository $invectoryRepository */
+        $invectoryRepository = $this->getRepositoryManager()->get(InvectoryRepository::class);
+
+        /** @var InvectoryProductRepository $invectoryRepository */
+        $invectoryProductRepository = $this->getRepositoryManager()->get(InvectoryProductRepository::class);
+
+        $invectoryRepository->findById($invectory_id)->delete();
+        $invectoryProductRepository->deleteById($invectory_id);
 
         return $this->responseJSON(
             $response,

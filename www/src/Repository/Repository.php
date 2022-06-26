@@ -58,7 +58,7 @@ abstract class Repository
     /**
      * @return Builder
      */
-    protected function newQuery(): Builder
+    public function newQuery(): Builder
     {
         return $this->entity->newQuery();
     }
