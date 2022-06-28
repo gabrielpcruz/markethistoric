@@ -29,5 +29,10 @@ return function (App $app) {
     $app->get('/v1/invenctory/{id}/list', [Invectory::class, 'list']);
 
     $app->post('/v1/invenctory', [Invectory::class, 'post']);
+    $app->put('/v1/invenctory/{id}', [Invectory::class, 'put']);
     $app->delete('/v1/invenctory/{id}', [Invectory::class, 'delete']);
+
+
+    $app->put('/v1/invenctory/cart/{product_inventory_id}', [Invectory::class, 'putOnCart']);
+    $app->delete('/v1/invenctory/cart/{product_inventory_id}', [Invectory::class, 'deleteFromCart']);
 };

@@ -143,4 +143,96 @@ class Invectory extends ControllerApi
             []
         );
     }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $params
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function put(Request $request, Response $response, $params): Response
+    {
+        $invenctory_id = $request->getAttribute('id');
+
+        $listInfo = json_decode($request->getBody()->getContents());
+
+        $invectoryRepository = $this->getRepositoryManager()->get(InvectoryRepository::class);
+
+        /** @var InventoryEntity $invenctory */
+        $invenctory = $invectoryRepository->findById($invenctory_id);
+        $invenctory->setTitle($listInfo->name);
+
+        /** @var InvectoryProductRepository $invectoryRepository */
+        $invectoryProductRepository = $this->getRepositoryManager()->get(InvectoryProductRepository::class);
+        $invectoryProductRepository->deleteById($invenctory->getId());
+
+        foreach ($listInfo->products as $product_id) {
+            $invenctoryProduct = new InvectoryProductEntity();
+            $invenctoryProduct->setIdInvenctory($invenctory->getId());
+            $invenctoryProduct->setIdProduct($product_id);
+            $invenctoryProduct->save();
+        }
+
+        return $this->responseJSON(
+            $response,
+            []
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $params
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function putOnCart(Request $request, Response $response, $params): Response
+    {
+        $product_inventory_id = $request->getAttribute('product_inventory_id');
+
+        /** @var InvectoryProductRepository $invectoryRepository */
+        $invectoryProductRepository = $this->getRepositoryManager()->get(InvectoryProductRepository::class);
+
+        /** @var InvectoryProductEntity $productInventory */
+        $inventoryProduct = $invectoryProductRepository->findById($product_inventory_id);
+        $inventoryProduct->checked = 1;
+        $inventoryProduct->save();
+
+        return $this->responseJSON(
+            $response,
+            []
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $params
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function deleteFromCart(Request $request, Response $response, $params): Response
+    {
+        $product_inventory_id = $request->getAttribute('product_inventory_id');
+
+        /** @var InvectoryProductRepository $invectoryRepository */
+        $invectoryProductRepository = $this->getRepositoryManager()->get(InvectoryProductRepository::class);
+
+        /** @var InvectoryProductEntity $productInventory */
+        $inventoryProduct = $invectoryProductRepository->findById($product_inventory_id);
+        $inventoryProduct->checked = 0;
+        $inventoryProduct->save();
+
+        return $this->responseJSON(
+            $response,
+            []
+        );
+    }
 }

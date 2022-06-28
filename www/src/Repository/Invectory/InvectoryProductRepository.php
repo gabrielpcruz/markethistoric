@@ -13,7 +13,6 @@ class InvectoryProductRepository extends Repository
         return InvectoryProductEntity::class;
     }
 
-
     /**
      * @param $id
      * @return mixed

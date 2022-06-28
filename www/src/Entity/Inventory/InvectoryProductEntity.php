@@ -18,6 +18,7 @@ class InvectoryProductEntity extends Entity
      * @var string[]
      */
     protected $visible = [
+        'id',
         'inventory_entity_id',
         'product_entity_id',
         'checked',
@@ -37,6 +38,7 @@ class InvectoryProductEntity extends Entity
     public function attributesToArray(): array
     {
         return [
+            "id" => $this->id,
             "inventory_entity_id" => $this->inventory_entity_id,
             "product_entity_id" => $this->product_entity_id,
             "product_name" => $this->product->name,
