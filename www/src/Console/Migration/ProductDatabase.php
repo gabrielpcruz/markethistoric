@@ -81,7 +81,8 @@ class ProductDatabase extends ConsoleMigration
                 $table->float('price')->nullable(false);
                 $table->string('description', 255)->nullable(false);
 
-                $table->timestamps();
+                $table->timestamp('created_at')->useCurrent();
+                $table->timestamp('updated_at')->useCurrent();
             });
         }
 
@@ -102,7 +103,8 @@ class ProductDatabase extends ConsoleMigration
 
                 $table->tinyInteger('checked')->default(0)->nullable(false);
 
-                $table->timestamps();
+                $table->timestamp('created_at')->useCurrent();
+                $table->timestamp('updated_at')->useCurrent();
             });
         }
     }

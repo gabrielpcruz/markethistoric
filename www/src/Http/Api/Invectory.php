@@ -164,6 +164,7 @@ class Invectory extends ControllerApi
         /** @var InventoryEntity $invenctory */
         $invenctory = $invectoryRepository->findById($invenctory_id);
         $invenctory->setTitle($listInfo->name);
+        $invenctory->save();
 
         /** @var InvectoryProductRepository $invectoryRepository */
         $invectoryProductRepository = $this->getRepositoryManager()->get(InvectoryProductRepository::class);
