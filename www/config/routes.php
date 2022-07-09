@@ -23,6 +23,7 @@ return function (App $app) {
     $app->get('/v1/product', [Product::class, 'index']);
     $app->get('/v1/product/{id}', [Product::class, 'show']);
     $app->get('/v1/product/{id}/history', [Product::class, 'history']);
+    $app->post('/v1/product/{id}/history', [Product::class, 'addHistory']);
 
     $app->get('/v1/invenctory', [Invectory::class, 'index']);
     $app->get('/v1/invenctory/{id}', [Invectory::class, 'show']);

@@ -26,7 +26,7 @@ class ProductEntity extends Entity
      */
     public function history(): HasMany
     {
-        return $this->hasMany(ProductHistoryEntity::class);
+        return $this->hasMany(ProductHistoryEntity::class)->orderBy('created_at', 'desc');
     }
 
     /**

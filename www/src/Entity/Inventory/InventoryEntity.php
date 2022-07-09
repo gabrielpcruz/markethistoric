@@ -49,6 +49,6 @@ class InventoryEntity extends Entity
      */
     public function list() : HasMany
     {
-        return $this->hasMany(InvectoryProductEntity::class);
+        return $this->hasMany(InvectoryProductEntity::class)->orderBy('checked');
     }
 }

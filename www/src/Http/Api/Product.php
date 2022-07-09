@@ -3,6 +3,7 @@
 namespace App\Http\Api;
 
 use App\Entity\Product\ProductEntity;
+use App\Entity\Product\ProductHistoryEntity;
 use App\Http\ControllerApi;
 use App\Repository\Product\ProductRepository;
 use Psr\Container\ContainerExceptionInterface;
@@ -78,6 +79,30 @@ class Product extends ControllerApi
         return $this->responseJSON(
             $response,
             $product->history->toArray()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $params
+     * @return Response
+     */
+    public function addHistory(Request $request, Response $response, $params): Response
+    {
+        $product_id = $request->getAttribute('id');
+        $history = json_decode($request->getBody()->getContents());
+
+        $producHistory = new ProductHistoryEntity();
+        $producHistory->setProductId($product_id);
+        $producHistory->setPrice($history->price);
+        $producHistory->setDescription($history->description);
+
+        $producHistory->save();
+
+        return $this->responseJSON(
+            $response,
+            []
         );
     }
 }

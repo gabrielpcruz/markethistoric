@@ -4,13 +4,20 @@ namespace App\Entity\Product;
 
 use App\Entity\Entity;
 use DateTime;
+use DateTimeImmutable;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ProductHistoryEntity extends Entity
 {
+    /**
+     * @var string
+     */
     protected $table = 'product_history';
 
+    /**
+     * @var string[]
+     */
     protected $visible = [
         'id',
         'product_entity_id',
@@ -20,13 +27,39 @@ class ProductHistoryEntity extends Entity
     ];
 
     /**
+     * @param $id
+     * @return void
+     */
+    public function setProductId($id)
+    {
+        $this->attributes['product_entity_id'] = $id;
+    }
+
+    /**
+     * @param $price
+     * @return void
+     */
+    public function setPrice($price)
+    {
+        $this->attributes['price'] = $price;
+    }
+
+    /**
+     * @param $description
+     * @return void
+     */
+    public function setDescription($description)
+    {
+        $this->attributes['description'] = $description;
+    }
+
+    /**
      * @return HasOne
      */
     public function product(): HasOne
     {
         return $this->hasOne(ProductEntity::class, 'id', 'product_entity_id');
     }
-
 
     /**
      * @return array
