@@ -1,1 +1,1 @@
-FROM gabrielpcruz/php:7.4
+FROM nginx:latest

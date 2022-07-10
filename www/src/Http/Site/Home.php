@@ -23,14 +23,9 @@ class Home extends ControllerSite
      */
     public function index(Request $request, Response $response): Response
     {
-        $repository = $this->getRepositoryManager()->get(ProductRepository::class);
-
-        /** @var ProductEntity $product */
-        $product = $repository->findById(1);
-
         return $this->responseJSON(
             $response,
-            $product->history()->get()->toArray()
+            []
         );
     }
 }
