@@ -1,1 +1,0 @@
-FROM php:7.4.29-fpm-alpine3.16
