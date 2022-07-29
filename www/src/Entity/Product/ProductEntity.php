@@ -17,6 +17,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class ProductEntity extends Entity
 {
     /**
+     * @var mixed
+     */
+    public $name;
+
+    /**
      * @var string
      */
     protected $table = 'product';
@@ -35,5 +40,14 @@ class ProductEntity extends Entity
     public function product(): HasMany
     {
         return $this->hasMany(InvectoryProductEntity::class);
+    }
+
+    /**
+     * @param $name
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->attributes['name'] = $name;
     }
 }

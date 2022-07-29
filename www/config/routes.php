@@ -5,6 +5,7 @@ use App\Http\Api\Product;
 use Slim\App;
 
 use App\Http\Site\Home;
+use Slim\Routing\RouteCollectorProxy;
 
 return function (App $app) {
 
@@ -19,21 +20,31 @@ return function (App $app) {
     // Site
     $app->get('/', [Home::class, 'index']);
 
-    // Api
-    $app->get('/v1/product', [Product::class, 'index']);
-    $app->get('/v1/product/{id}', [Product::class, 'show']);
-    $app->get('/v1/product/{id}/history', [Product::class, 'history']);
-    $app->post('/v1/product/{id}/history', [Product::class, 'addHistory']);
+    $app->group('/v1', function (RouteCollectorProxy $v1) {
 
-    $app->get('/v1/invenctory', [Invectory::class, 'index']);
-    $app->get('/v1/invenctory/{id}', [Invectory::class, 'show']);
-    $app->get('/v1/invenctory/{id}/list', [Invectory::class, 'list']);
-
-    $app->post('/v1/invenctory', [Invectory::class, 'post']);
-    $app->put('/v1/invenctory/{id}', [Invectory::class, 'put']);
-    $app->delete('/v1/invenctory/{id}', [Invectory::class, 'delete']);
+        $v1->group('/product', function (RouteCollectorProxy $product) {
+            $product->get('', [Product::class, 'index']);
+            $product->post('', [Product::class, 'add']);
+            $product->put('/{id}', [Product::class, 'edit']);
 
 
-    $app->put('/v1/invenctory/cart/{product_inventory_id}', [Invectory::class, 'putOnCart']);
-    $app->delete('/v1/invenctory/cart/{product_inventory_id}', [Invectory::class, 'deleteFromCart']);
+            $product->get('/{id}', [Product::class, 'show']);
+            $product->get('/{id}/history', [Product::class, 'history']);
+            $product->post('/{id}/history', [Product::class, 'addHistory']);
+        });
+
+        $v1->group('/invenctory', function (RouteCollectorProxy $invenctory) {
+            $invenctory->get('', [Invectory::class, 'index']);
+            $invenctory->post('/', [Invectory::class, 'post']);
+
+            $invenctory->get('/{id}', [Invectory::class, 'show']);
+            $invenctory->put('/{id}', [Invectory::class, 'put']);
+            $invenctory->delete('/{id}', [Invectory::class, 'delete']);
+
+            $invenctory->get('/{id}/list', [Invectory::class, 'list']);
+
+            $invenctory->put('/cart/{product_inventory_id}', [Invectory::class, 'putOnCart']);
+            $invenctory->delete('/cart/{product_inventory_id}', [Invectory::class, 'deleteFromCart']);
+        });
+    });
 };
