@@ -72,6 +72,7 @@ class Invectory extends ControllerApi
     {
         $invectory_id = $request->getAttribute('id');
 
+
         /** @var InvectoryRepository $productRepository */
         $invectoryRepository = $this->getRepositoryManager()->get(InvectoryRepository::class);
 

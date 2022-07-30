@@ -41,7 +41,7 @@ class InvectoryProductEntity extends Entity
             "id" => $this->id,
             "inventory_id" => $this->inventory_entity_id,
             "product_id" => $this->product_entity_id,
-            "product_name" => $this->product->name,
+            "product_name" => $this->product->name(),
             "checked" => $this->checked,
         ];
     }

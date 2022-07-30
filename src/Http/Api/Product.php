@@ -105,4 +105,73 @@ class Product extends ControllerApi
             []
         );
     }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $params
+     * @return Response
+     */
+    public function add(Request $request, Response $response, $params): Response
+    {
+        $productForm = json_decode($request->getBody()->getContents());
+
+        if (!isset($productForm->name)) {
+            return $this->responseJSON(
+                $response,
+                [], 500
+            );
+        }
+
+        $product = new ProductEntity();
+        $product->setName($productForm->name);
+        $product->save();
+
+        return $this->responseJSON(
+            $response,
+            []
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $params
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function edit(Request $request, Response $response, $params): Response
+    {
+        $product_id = $request->getAttribute('id');
+        $productForm = json_decode($request->getBody()->getContents());
+
+        if (!isset($productForm->name)) {
+            return $this->responseJSON(
+                $response,
+                [], 500
+            );
+        }
+
+        $productRepository = $this->getRepositoryManager()->get(ProductRepository::class);
+
+        /** @var ProductEntity $product */
+        $product = $productRepository->findById($product_id);
+
+        if (!$product) {
+            return $this->responseJSON(
+                $response,
+                [], 404
+            );
+        }
+
+        $product->setName($productForm->name);
+        $product->save();
+
+        return $this->responseJSON(
+            $response,
+            []
+        );
+    }
 }
