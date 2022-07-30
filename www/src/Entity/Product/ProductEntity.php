@@ -50,4 +50,11 @@ class ProductEntity extends Entity
     {
         $this->attributes['name'] = $name;
     }
+
+    /**
+     * @return mixed
+     */
+    public function name() {
+        return $this->attributes['name'];
+    }
 }

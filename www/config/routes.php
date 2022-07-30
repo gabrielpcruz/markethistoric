@@ -35,7 +35,7 @@ return function (App $app) {
 
         $v1->group('/invenctory', function (RouteCollectorProxy $invenctory) {
             $invenctory->get('', [Invectory::class, 'index']);
-            $invenctory->post('/', [Invectory::class, 'post']);
+            $invenctory->post('', [Invectory::class, 'post']);
 
             $invenctory->get('/{id}', [Invectory::class, 'show']);
             $invenctory->put('/{id}', [Invectory::class, 'put']);
